@@ -1,0 +1,77 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #D1F8EF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+}
+
+.header {
+    width: 100%;
+    background-color: #3674B5;
+    color: white;
+    font-family: "Aclonica", serif;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+    max-width: 800px;
+    width: 100%;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 8px; /* Reduced padding for a more compact look */
+    text-align: left;
+    color: white;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-size: 14px; /* Smaller font size for headers */
+}
+
+td {
+    font-size: 14px; /* Smaller font size for data cells */
+}
+
+/* Change background color of column headers */
+th:nth-child(1) {
+    background-color: #007BFF; /* Light blue for the first column header */
+}
+
+th:nth-child(2) {
+    background-color:#007BFF; /* Light pink for the second column header */
+}
+
+th:nth-child(3) {
+    background-color: #007BFF; /* Light green for the third column header */
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+th, td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+}

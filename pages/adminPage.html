@@ -1,0 +1,74 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ResponsiveSignin.html");
+    exit;
+}
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FT Admin Page</title>
+    <link rel="stylesheet" href="../assets/adminPageStyle.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">FT Admin Page</div>
+        <a href="notifications.html" class="notification-icon">
+            <button class="notification-button">
+                <i class="fas fa-bell"></i>
+                <span class="badge" id="notificationCount"></span> <!-- Notification Count -->
+            </button>
+        </a>
+        <div class="buttons">
+            <button class="box" onclick="redirectTo('turbo.html')">Turbo charger orders</button>
+            <button class="box" onclick="redirectTo('components.html')">Component orders</button>
+            <button class="box" onclick="redirectTo('orderReports.html')">Ordering report</button>
+        </div>
+    </div>
+
+    <script>
+function updateNotificationCount() {
+    fetch('../process/getNotifications.php')
+        .then(response => response.json())
+        .then(data => {
+            const notificationCount = document.getElementById('notificationCount');
+            if (data.count > 0) {
+                notificationCount.textContent = data.count;
+                notificationCount.style.display = "inline-block"; // Show badge if count > 0
+            } else {
+                notificationCount.style.display = "none"; // Hide badge if count is 0
+            }
+        })
+        .catch(error => console.error('Error fetching notification count:', error));
+}
+
+// Update count every 5 seconds
+setInterval(updateNotificationCount, 5000);
+window.onload = updateNotificationCount;
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Reset notification count when admin visits the page
+    fetch("../process/updateLastSeenId.php")
+        .then(response => response.json())
+        .then(data => {
+            console.log("Last seen ID updated:", data);
+            updateNotificationCount(); // Immediately update UI after resetting count
+        })
+        .catch(error => console.error("Error updating last seen ID:", error));
+});
+
+function redirectTo(page) {
+    window.location.href = page;
+}
+
+    </script>
+</body>
+</html>

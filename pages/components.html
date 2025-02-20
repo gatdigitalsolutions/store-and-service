@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <head>
+        <title>Turbo Charger Orders</title>
+        <style>
+            .container {
+                display: flex;
+                margin-top: 30px;
+                justify-content: center;
+                align-items: center; 
+                height: 100px;
+            }
+              
+            body {
+                background-color: #D1F8EF;
+            }
+            
+            .titlestyle {
+                background-color: #3674B5;
+                height: 100px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .title {
+                text-align: center;
+                font-family: "Aclonica", serif;
+                font-size: 40px;
+                color: white;
+                margin: 0;
+            }
+
+            .button {
+                background-color: #3674B5;
+                color: white;
+                padding: 20px;
+                width: 300px;
+                font-size: 18px;
+                font-weight: bold;
+                border-radius: 10px;
+                cursor: pointer;
+                transition: transform 0.3s, background-color 0.3s;
+                border: none;
+}
+            .backbutton {
+                background-color: #7E5CAD;
+                color: white;
+                padding: 10px 20px;
+                font-size: 18px;
+                font-weight: bold;
+                border-radius: 10px;
+                cursor: pointer;
+                transition: transform 0.3s, background-color 0.3s;
+                margin-top: 20px;
+                border: none;
+            }
+
+            .button:hover {
+                background-color: #3674B5;
+                transform: scale(1.05);
+}
+            .backbutton:hover{
+                background-color: #A1E3F9;
+            }
+            
+        </style>
+    </head>
+   
+    <body>
+        <div class="titlestyle">
+            <p class="title">Component Ordered Items</p>
+        </div>
+
+        <div class="container">
+            <button class="button" onclick="tobeOrdered()">To Be Ordered Items</button>
+        </div>
+
+        <div class="container">
+            <button class="button" onclick="orderedItems()">Ordered Items</button>
+        </div>
+
+        <div class="container">
+            <button class="button" onclick="delivered()">Delivered Items</button>
+        </div>
+
+        <div class="container">
+            <button class="backbutton" onclick="goBack()">Back</button>
+        </div>
+
+        <script>
+            function tobeOrdered() {
+                window.location.href = "to-be-ordered.html"; 
+            }
+
+            function orderedItems() {
+                window.location.href = "ordered-items.html"; 
+            }
+
+            function delivered() {
+                window.location.href = "delivered-components.html"; 
+            }
+
+            function goBack() {
+                window.history.back(); 
+            }
+        </script>
+    </body>
+</html>

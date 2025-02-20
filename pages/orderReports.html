@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Reports</title>
+    <link rel="stylesheet" href="../assets/report.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="header"><h1>Order Reports</h1></div>
+<div class="content">
+    <div class="box">
+        <h2>Turbo Chargers</h2>
+        <div class="order-list">
+            <label>To be ordered: <input type="text" class="to-be-ordered" value="0" readonly></label>
+            <label>Ordered: <input type="text" class="ordered" value="0" readonly></label>
+            <label>Delivered: <input type="text" class="delivered" value="0" readonly></label>
+        </div>
+        <button class="details-btn" data-target="turbo.html">Details</button>
+    </div>
+    <div class="box highlighted">
+        <h2>Components</h2>
+        <div class="order-list">
+            <label>To be ordered: <input type="text" class="to-be-ordered" value="0" readonly></label>
+            <label>Ordered: <input type="text" class="ordered" value="0" readonly></label>
+            <label>Delivered: <input type="text" class="delivered" value="0" readonly></label>
+        </div>
+        <button class="details-btn" data-target="components.html">Details</button>
+    </div>
+</div>
+
+    <script>
+ document.addEventListener("DOMContentLoaded", () => {
+    fetchOrderCounts(); // Fetch data when the page loads
+
+    // Add event listener to "Details" buttons
+    const buttons = document.querySelectorAll(".details-btn");
+    buttons.forEach(button => {
+        button.addEventListener("click", () => {
+            let targetPage = button.getAttribute("data-target");
+            window.location.href = targetPage; // Navigate to the target page
+        });
+    });
+});
+
+// Function to fetch row counts from the database
+function fetchOrderCounts() {
+    fetch("../process/fetch_order_counts.php")
+        .then(response => response.json())
+        .then(data => {
+            console.log("Fetched Data:", data); // Debugging
+
+            if (data.error) {
+                console.error("Error fetching counts:", data.error);
+                return;
+            }
+
+            // Update Turbo Chargers counts
+            document.querySelector(".box:nth-child(1) .to-be-ordered").value = data.toBeOrdered;
+            document.querySelector(".box:nth-child(1) .ordered").value = data.ordered;
+            document.querySelector(".box:nth-child(1) .delivered").value = data.delivered;
+
+            // Update Components counts
+            document.querySelector(".box:nth-child(2) .to-be-ordered").value = data.toBeOrderedComponents;
+            document.querySelector(".box:nth-child(2) .ordered").value = data.orderedComponents;
+            document.querySelector(".box:nth-child(2) .delivered").value = data.deliveredComponents;
+        })
+        .catch(error => console.error("Error fetching order counts:", error));
+}
+
+    </script>
+    
+    
+    
+</body>
+</html>

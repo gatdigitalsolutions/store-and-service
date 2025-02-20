@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordered Chargers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/ordered.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<style>
+   /* Ensure table text is visible */
+#orderedTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#orderedTable th, #orderedTable td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    color: black; /* Set text color */
+}
+
+
+</style>
+<body>
+    <div class="header"><h1>Ordered Chargers</h1></div>
+    
+    <div class="container">
+        <table id="orderedTable">
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>Quantity</th>
+                    <th>Confirm</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td colspan="3" style="text-align: center;">Loading...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            function fetchOrderedItems() {
+                $.ajax({
+                    url: '../process/fetch_ordered.php',
+                    method: 'GET',
+                    success: function(response) {
+                        console.log("Fetched Data:", response); // Debugging
+
+                        if ($.trim(response) === "") {
+                            $('#orderedTable tbody').html('<tr><td colspan="3" style="text-align: center;">No data found</td></tr>');
+                        } else {
+                            $('#orderedTable tbody').html(response);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX Error:", status, error);
+                        $('#orderedTable tbody').html('<tr><td colspan="3" style="text-align: center; color: red;">Error loading data</td></tr>');
+                    }
+                });
+            }
+
+            fetchOrderedItems(); // Load items on page load
+
+            $(document).on("change", ".confirmCheckbox", function() {
+                if ($(this).is(":checked")) {
+                    let id = $(this).data("id");
+
+                    $.ajax({
+                        url: '../process/confirm_delivery.php',
+                        method: 'POST',
+                        data: { id: id },
+                        success: function(response) {
+                            console.log("Confirm Response:", response);
+
+                            if (response.trim() === "✅ Moved successfully!") {
+                                $("#row_" + id).fadeOut(300, function() { $(this).remove(); });
+                            } else {
+                                alert("Error: " + response);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert("AJAX Error: " + error);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

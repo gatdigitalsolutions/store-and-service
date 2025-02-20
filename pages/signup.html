@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Signup</title>
+    <link rel="stylesheet" href="../assets/signup.css">
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header"><h1>Signup Page</h1></div>
+    <div class="login-container">
+        <form id="signupForm" action="../process/signup_process.php" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username">
+            <small class="error-message" id="usernameError"></small>
+
+            <label for="role">Role:</label>
+            <select id="role" name="role">
+                <option value="">Select your role</option>
+                <option value="CEO">CEO</option>
+                <option value="Manager">Manager</option>
+                <option value="Assistant">Assistant</option>
+            </select>
+            <small class="error-message" id="roleError"></small>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password">
+            <small class="error-message" id="passwordError"></small>
+
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("signupForm").addEventListener("submit", function(event) {
+            let username = document.getElementById("username").value.trim();
+            let role = document.getElementById("role").value;
+            let password = document.getElementById("password").value.trim();
+
+            let usernameError = document.getElementById("usernameError");
+            let roleError = document.getElementById("roleError");
+            let passwordError = document.getElementById("passwordError");
+
+            // Reset error messages
+            usernameError.textContent = "";
+            roleError.textContent = "";
+            passwordError.textContent = "";
+
+            let isValid = true;
+
+            if (username === "") {
+                usernameError.textContent = "Username is required";
+                isValid = false;
+            }
+
+            if (role === "") {
+                roleError.textContent = "Please select a role";
+                isValid = false;
+            }
+
+            if (password === "") {
+                passwordError.textContent = "Password is required";
+                isValid = false;
+            }
+
+            if (!isValid) {
+                event.preventDefault(); // Prevent submission only if there are errors
+            }
+        });
+    </script>
+</body>
+</html>

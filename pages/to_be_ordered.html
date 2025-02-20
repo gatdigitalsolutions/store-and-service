@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turbo Charger Orders</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #D1F8EF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #3674B5;
+            color: white;
+            font-family: "Aclonica", serif;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+        .input-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        #model, #quantity {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #007BFF;
+            border-radius: 8px;
+        }
+        .amount-control {
+            display: flex;
+            align-items: center;
+            background-color: #3674B5;
+            border-radius: 8px;
+            padding: 5px;
+        }
+        .amount-control button {
+            padding: 5px 15px;
+            font-size: 16px;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        #addButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #0D92F4;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">Turbo Charger Orders</div>
+    <div class="container">
+        <div class="input-section">
+            <input type="text" id="model" placeholder="Enter model" required>
+            <div class="amount-control">
+                <button id="decrease">-</button>
+                <input type="number" id="quantity" value="1" min="1" required>
+                <button id="increase">+</button>
+            </div>
+            <button id="addButton">Add</button>
+        </div>
+        <table id="toBeOrderedTable">
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>Quantity</th>
+                    <th>Confirm</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+<script>
+$(document).ready(function () {
+    function fetchToBeOrderedItems() {
+        $.get("../process/fetch_to_be_ordered.php", function (data) {
+            $("#toBeOrderedTable tbody").html(data);
+            attachCheckboxEvent();
+        });
+    }
+
+    $("#addButton").on("click", function () {
+        let model = $("#model").val();
+        let quantity = $("#quantity").val();
+        if (model && quantity > 0) {
+            $.post("../process/add_to_be_ordered.php", { model: model, quantity: quantity }, function (response) {
+                alert(response);
+                fetchToBeOrderedItems();
+                $("#model").val("");
+                $("#quantity").val(1);
+            });
+        } else {
+            alert("Please enter a valid model and quantity.");
+        }
+    });
+
+    $("#increase").click(function () { let q = parseInt($("#quantity").val()) + 1; $("#quantity").val(q); });
+    $("#decrease").click(function () { let q = parseInt($("#quantity").val()); if (q > 1) $("#quantity").val(q - 1); });
+
+    function attachCheckboxEvent() {
+        $(".confirmCheckbox").on("change", function () {
+            if (this.checked) {
+                let id = $(this).data("id");
+                $.post("../process/confirm_order.php", { id: id }, function (response) {
+                    alert(response);
+                    fetchToBeOrderedItems();
+                });
+            }
+        });
+    }
+
+    fetchToBeOrderedItems();
+});
+</script>
+</body>
+</html>

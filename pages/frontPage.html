@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turbo Charger Sales</title>
+    <link rel="stylesheet" href="../assets/frontPage.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <img src="IMG_0265-photoaidcom-cropped.jpeg" alt="Logo" class="logo">
+            <div class="contact-info">
+                <p>Contact info:</p>
+                <p>Telephone: +251 9 11239519</p>
+                <p>Email: fitseturbo@gmail.com</p>
+            </div>
+        </div>
+        <div class="main-content">
+            <img src="Screenshot 2025-02-13 at 8.54.38 in the evening.png" alt="Turbocharger" class="background-image">
+            <h1>FITSE'S TURBO CHARGER SALES AND SERVICES</h1>
+            <p id="typing-text"></p>
+            <button id="startbutton" class="start-button">Start</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const text = "Boosting efficiency, powering performance.";
+            let index = 0;
+            function typeEffect() {
+                if (index < text.length) {
+                    document.getElementById("typing-text").textContent += text.charAt(index);
+                    index++;
+                    setTimeout(typeEffect, 100);
+                }
+            }
+            typeEffect();
+
+            // Fix: Correct the ID to match the button's ID in HTML
+            document.getElementById("startbutton").addEventListener("click", function () {
+                window.location.href = "clientSignup.html"; // Redirects to the signup page
+            });
+        });
+    </script>
+</body>
+</html>

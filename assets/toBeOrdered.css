@@ -1,0 +1,103 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #D1F8EF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+}
+
+.container {
+    max-width: 800px; /* Increased from 600px */
+    width: 100%;
+    background: #fff;
+    padding: 100px; /* Increased from 20px */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+.header {
+    background-color: #3674B5;
+    color: white;
+    font-family: "Aclonica", serif;
+    padding: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.input-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.amount-control {
+    display: flex;
+    align-items: center;
+    background-color: #3674B5;
+    border-radius: 8px;
+    height: 50px;
+    width: 160px;
+    justify-content: center;
+}
+
+.amount-control button {
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.amount-control input {
+    width: 50px;
+    text-align: center;
+    margin: 0 10px;
+}
+#model {
+    padding: 5px 10px;
+    font-size: 16px;
+    border: 2px solid #007BFF; /* Added border */
+    border-radius: 8px; /* Optional: Adds rounded corners */
+}
+
+#add {
+    padding: 5px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    
+    text-align: left;
+}
+
+th:nth-child(1) {
+    background-color: #0D92F4; /* Light blue for the first column header */
+}
+
+th:nth-child(2) {
+    background-color: #0D92F4; /* Light pink for the second column header */
+}
+
+th:nth-child(3) {
+    background-color: #0D92F4; /* Light green for the third column header */
+}

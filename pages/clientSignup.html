@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/clientInterest.css">
+    <title>Client Signup</title>
+</head>
+<body>
+    <div class="left-section"></div>
+    <div class="form-container">
+        <div class="form-box">
+            <h2>Welcome.</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone No.:</label>
+                    <input type="text" id="phone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="service">Service Type:</label>
+                    <select id="service" name="service">
+                        <option value="">Select</option>
+                        <option value="repair">Repair</option>
+                        <option value="installation">Installation</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Your existing code remains intact, we just add the form submission handling.
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            fetchClients();
+        });
+        
+        function fetchClients() {
+            fetch("../process/fetch_client_info.php")
+                .then(response => response.text())
+                .then(data => {
+                    let tableBody = document.getElementById("clientTableBody");
+                    if (!tableBody) {
+                        console.error("Element with ID 'clientTableBody' not found!");
+                        return;
+                    }
+                    tableBody.innerHTML = data;
+        
+                    // Attach event listeners to checkboxes after data is loaded
+                    document.querySelectorAll(".deliveryCheckbox").forEach(checkbox => {
+                        checkbox.addEventListener("change", function () {
+                            if (this.checked) {
+                                deleteFromDatabase(this);
+                            }
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching client data:", error);
+                });
+        }
+        
+        function deleteFromDatabase(checkbox) {
+            let row = checkbox.closest("tr");
+            let clientId = checkbox.dataset.id; // Get client ID from data attribute
+        
+            if (!clientId) {
+                console.error("Client ID not found!");
+                return;
+            }
+        
+            fetch("../process/remove_client.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `id=${clientId}`
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data); // Debugging response
+                if (data.includes("success")) {
+                    row.remove(); // Remove row from table after successful deletion
+                } else {
+                    alert("Error: " + data);
+                }
+            })
+            .catch(error => {
+                console.error("Error removing client:", error);
+            });
+        }
+        
+        // ADDING FORM SUBMISSION HANDLER
+        document.getElementById("signupForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission
+        
+            let formData = new FormData(this);
+        
+            fetch("../process/clientsignup.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.success);
+                    this.reset(); // Reset form after successful submission
+                } else {
+                    alert("Error: " + data.error);
+                }
+            })
+            .catch(error => {
+                console.error("Error submitting form:", error);
+            });
+        });
+        </script>
+        
+</body>
+</html>

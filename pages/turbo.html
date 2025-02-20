@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turbo Charger Orders</title>
+    <link rel="stylesheet" href="../assets/turbo.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">Turbo Charger Orders</div>
+    <div class="container">
+        <button class="button" onclick="navigate('to_be_ordered.html')">To be ordered Chargers</button>
+        <button class="button" onclick="navigate('orderedChargers.html')">Ordered Chargers</button>
+        <button class="button" onclick="navigate('deliveredChargers.html')">Delivered Chargers</button>
+    </div>
+    <button class="back-button" onclick="goBack()">back</button>
+    
+    <script>
+        function navigate(page) {
+            window.location.href = page;
+        }
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

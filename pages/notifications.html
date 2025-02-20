@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <link rel="stylesheet" href="../assets/notifications.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header"><h1>Client Requests</h1></div>
+    
+    <div class="container">
+        <table id="orderedTable">
+            <thead>
+                <tr>
+                    <th>Client Name</th>
+                    <th>Phone No.</th>
+                    <th>Service Type</th>
+                    <th>Confirm</th>
+                </tr>
+            </thead>
+            <tbody id="clientTableBody">
+                <!-- Rows will be added here dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    fetchClients();
+});
+
+function fetchClients() {
+    fetch("../process/fetch_client_info.php")
+        .then(response => response.text())
+        .then(data => {
+            let tableBody = document.getElementById("clientTableBody");
+            if (!tableBody) {
+                console.error("Element with ID 'clientTableBody' not found!");
+                return;
+            }
+            tableBody.innerHTML = data;
+
+            // Attach event listeners to checkboxes after data is loaded
+            document.querySelectorAll(".deliveryCheckbox").forEach(checkbox => {
+                checkbox.addEventListener("change", function () {
+                    if (this.checked) {
+                        deleteFromDatabase(this);
+                    }
+                });
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching client data:", error);
+        });
+}
+
+function deleteFromDatabase(checkbox) {
+    let row = checkbox.closest("tr");
+    let clientId = checkbox.dataset.id; // Get client ID from data attribute
+
+    if (!clientId) {
+        console.error("Client ID not found!");
+        return;
+    }
+
+    fetch("../process/remove_client.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `id=${clientId}`
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log(data); // Debugging response
+        if (data.includes("success")) {
+            row.remove(); // Remove row from table after successful deletion
+        } else {
+            alert("Error: " + data);
+        }
+    })
+    .catch(error => {
+        console.error("Error removing client:", error);
+    });
+}
+
+
+    </script>
+</body>
+</html>

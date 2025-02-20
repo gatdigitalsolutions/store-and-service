@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordered Items</title>
+    <link rel="stylesheet" href="../assets/ordered_items.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header"><h1>Ordered Items</h1></div>
+    
+    <div class="container">
+        
+        <table id="orderedTable">
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>Quantity</th>
+                    <th>Confirm</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be added here dynamically -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+    const confirmedItems = JSON.parse(localStorage.getItem('confirmedItems')) || [];
+    const tableBody = document.querySelector('#orderedTable tbody');
+
+    confirmedItems.forEach(item => {
+        const newRow = tableBody.insertRow();
+        const modelCell = newRow.insertCell(0);
+        const quantityCell = newRow.insertCell(1);
+        const confirmCell = newRow.insertCell(2);
+
+        modelCell.textContent = item.model;
+        quantityCell.textContent = item.quantity;
+        confirmCell.innerHTML = '<input type="checkbox" class="deliveryCheckbox">';
+    });
+
+    // Add event listener to checkboxes
+    document.querySelectorAll('.deliveryCheckbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const deliveredItems = JSON.parse(localStorage.getItem('deliveredItems')) || [];
+            const row = checkbox.closest('tr');
+            const model = row.cells[0].textContent;
+            const quantity = row.cells[1].textContent;
+
+            // If the checkbox is checked, add the item to the deliveredItems array
+            if (checkbox.checked) {
+                deliveredItems.push({ model, quantity });
+            } else {
+                // If unchecked, remove the item from the deliveredItems array
+                const index = deliveredItems.findIndex(item => item.model === model && item.quantity === quantity);
+                if (index !== -1) {
+                    deliveredItems.splice(index, 1);
+                }
+            }
+
+            // Save the updated deliveredItems array to localStorage
+            localStorage.setItem('deliveredItems', JSON.stringify(deliveredItems));
+        });
+    });
+});
+    </script>
+</body>
+</html>

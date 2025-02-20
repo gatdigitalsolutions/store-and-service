@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivered Items</title>
+    <link rel="stylesheet" href="../assets/delivered.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Delivered Items</h1>
+    </header>
+    <div class="container">
+        <table id="deliveredTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Model</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be added here dynamically -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    const deliveredItems = JSON.parse(localStorage.getItem('deliveredItems')) || [];
+    const tableBody = document.querySelector('#deliveredTable tbody');
+
+    deliveredItems.forEach(item => {
+        const newRow = tableBody.insertRow();
+        const modelCell = newRow.insertCell(0);
+        const quantityCell = newRow.insertCell(1);
+
+        modelCell.textContent = item.model;
+        quantityCell.textContent = item.quantity;
+    });
+});
+    </script>
+</body>
+</html>
